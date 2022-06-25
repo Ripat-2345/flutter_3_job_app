@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_3_job_app/bottom_nav.dart';
+import 'package:flutter_3_job_app/screens/get_started_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../consts.dart';
@@ -19,9 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
       const Duration(seconds: 2),
       () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BottomNav()),
+          MaterialPageRoute(builder: (context) => const GetStartedScreen()),
         );
       },
     );
