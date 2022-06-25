@@ -29,10 +29,10 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _listMenu[_selectedIndex][2],
+      body: SafeArea(child: _listMenu[_selectedIndex][2]),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: thirdColor,
-        unselectedItemColor: primaryColor,
+        unselectedItemColor: fourthColor,
         selectedLabelStyle: GoogleFonts.poppins(
           fontWeight: FontWeight.w500,
           fontSize: 12,
@@ -41,6 +41,7 @@ class _BottomNavState extends State<BottomNav> {
         onTap: _onItemTapped,
         items: _listMenu.map((index) {
           return BottomNavigationBarItem(
+            backgroundColor: primaryColor,
             icon: ImageIcon(
               AssetImage(index[0]),
               size: 24,
