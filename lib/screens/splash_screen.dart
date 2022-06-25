@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_3_job_app/screens/home/home_screen.dart';
+import 'package:flutter_3_job_app/bottom_nav.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'consts.dart';
+import '../consts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => BottomNav()),
         );
       },
     );
