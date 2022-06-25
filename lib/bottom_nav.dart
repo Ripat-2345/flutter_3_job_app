@@ -14,10 +14,10 @@ class _BottomNavState extends State<BottomNav> {
   late int _selectedIndex = 0;
 
   final List<dynamic> _listMenu = [
-    ["assets/icons/home_icon.png", "Home", const HomeScreen()],
-    ["assets/icons/notification_icon.png", "Notif", const HomeScreen()],
-    ["assets/icons/love_icon.png", "Like", const HomeScreen()],
-    ["assets/icons/user_icon.png", "Profile", const HomeScreen()],
+    ["assets/icons/home_icon.png", "Home", HomeScreen()],
+    ["assets/icons/notification_icon.png", "Notif", HomeScreen()],
+    ["assets/icons/love_icon.png", "Like", HomeScreen()],
+    ["assets/icons/user_icon.png", "Profile", HomeScreen()],
   ];
 
   void _onItemTapped(int index) {
@@ -37,6 +37,7 @@ class _BottomNavState extends State<BottomNav> {
           fontWeight: FontWeight.w500,
           fontSize: 12,
         ),
+        iconSize: 28,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: _listMenu.map((index) {
@@ -44,7 +45,6 @@ class _BottomNavState extends State<BottomNav> {
             backgroundColor: primaryColor,
             icon: ImageIcon(
               AssetImage(index[0]),
-              size: 24,
             ),
             label: index[1],
           );
