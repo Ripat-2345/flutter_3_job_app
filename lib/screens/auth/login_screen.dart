@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_3_job_app/bottom_nav.dart';
 import 'package:flutter_3_job_app/consts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../consts.dart';
@@ -56,7 +57,16 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const BottomNav();
+                            },
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,
                         elevation: 0,
