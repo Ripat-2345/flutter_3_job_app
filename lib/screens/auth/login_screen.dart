@@ -49,81 +49,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                Text(
-                  "Email Address",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: const Color(0xffB3B5C4),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: const Color(0xffF1F0F5),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(10),
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xff4141A4)),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xffFD4F56)),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xffFD4F56)),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Password",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: const Color(0xffB3B5C4),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: const Color(0xffF1F0F5),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(10),
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xff4141A4)),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xffFD4F56)),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xffFD4F56)),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                  ),
-                ),
+                const FormLogin(),
                 const SizedBox(height: 40),
                 Center(
                   child: SizedBox(
@@ -177,6 +103,96 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FormLogin extends StatelessWidget {
+  const FormLogin({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Email Address",
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            color: const Color(0xffB3B5C4),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: const Color(0xffF1F0F5),
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(10),
+              border: InputBorder.none,
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xff4141A4)),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xffFD4F56)),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xffFD4F56)),
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Text(
+          "Password",
+          style: GoogleFonts.poppins(
+            fontSize: 16,
+            color: const Color(0xffB3B5C4),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: const Color(0xffF1F0F5),
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(10),
+              border: InputBorder.none,
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xff4141A4)),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xffFD4F56)),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xffFD4F56)),
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
