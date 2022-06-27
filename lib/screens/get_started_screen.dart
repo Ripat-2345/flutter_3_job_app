@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/bottom_nav.dart';
 import 'package:flutter_3_job_app/consts.dart';
+import 'package:flutter_3_job_app/screens/auth/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -70,11 +71,11 @@ class GetStartedScreen extends StatelessWidget {
                     height: 45,
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return BottomNav();
+                              return const LoginScreen();
                             },
                           ),
                         );
