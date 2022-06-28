@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/consts.dart';
+import 'package:flutter_3_job_app/screens/category/category_screen.dart';
 import 'package:flutter_3_job_app/screens/detail_job/detail_job_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -120,7 +121,18 @@ class HomeScreen extends StatelessWidget {
                   child: Row(
                     children: categories.map((data) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CategoryScreen(
+                                  jobs: posteds,
+                                );
+                              },
+                            ),
+                          );
+                        },
                         child: Container(
                           margin: const EdgeInsets.only(right: 16),
                           padding: const EdgeInsets.symmetric(
