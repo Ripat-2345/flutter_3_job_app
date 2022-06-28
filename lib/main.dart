@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_3_job_app/providers/auth_provider.dart';
+import 'package:flutter_3_job_app/providers/user_provider.dart';
 import 'package:flutter_3_job_app/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +13,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(
+            create: (context) => AuthProvider()),
+        ChangeNotifierProvider<UserProvider>(
+            create: (context) => UserProvider()),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }
