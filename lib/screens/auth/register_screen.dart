@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_3_job_app/bottom_nav.dart';
+import 'package:flutter_3_job_app/models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../consts.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/user_provider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController nameController = TextEditingController();
+
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+
+  final TextEditingController goalController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    goalController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var authProvider = Provider.of<AuthProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -52,14 +82,46 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                const FormRegister(),
+                FormRegister(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  nameController: nameController,
+                  goalController: goalController,
+                ),
                 const SizedBox(height: 40),
                 Center(
                   child: SizedBox(
                     width: double.infinity,
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        UserModel? user = await authProvider.register(
+                          emailController.text,
+                          passwordController.text,
+                          nameController.text,
+                          goalController.text,
+                        );
+
+                        if (user != null) {
+                          userProvider.user = user;
+                          if (!mounted) return;
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BottomNav(),
+                            ),
+                            (route) => false,
+                          );
+                        } else {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Email Sudah Terdaftar"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,
                         elevation: 0,
@@ -104,9 +166,17 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class FormRegister extends StatelessWidget {
-  const FormRegister({
-    Key? key,
-  }) : super(key: key);
+  FormRegister({
+    required this.nameController,
+    required this.emailController,
+    required this.passwordController,
+    required this.goalController,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController goalController;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +201,7 @@ class FormRegister extends StatelessWidget {
             color: const Color(0xffF1F0F5),
           ),
           child: TextField(
+            controller: nameController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,
@@ -170,6 +241,7 @@ class FormRegister extends StatelessWidget {
             color: const Color(0xffF1F0F5),
           ),
           child: TextField(
+            controller: emailController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,
@@ -209,6 +281,7 @@ class FormRegister extends StatelessWidget {
             color: const Color(0xffF1F0F5),
           ),
           child: TextField(
+            controller: passwordController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,
@@ -248,6 +321,7 @@ class FormRegister extends StatelessWidget {
             color: const Color(0xffF1F0F5),
           ),
           child: TextField(
+            controller: goalController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,

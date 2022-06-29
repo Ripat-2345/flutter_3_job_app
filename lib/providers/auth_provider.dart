@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_3_job_app/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthProvider with ChangeNotifier {
-  Future<UserModel> register(
+  Future<UserModel?> register(
     String email,
     String password,
     String name,
@@ -30,11 +32,11 @@ class AuthProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         return UserModel.fromJson(jsonDecode(response.body));
       } else {
-        return null!;
+        return null;
       }
     } catch (e) {
       print(e);
-      return null!;
+      return null;
     }
   }
 }
