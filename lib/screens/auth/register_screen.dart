@@ -24,6 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final TextEditingController goalController = TextEditingController();
 
+  bool isLoading = false;
+
   @override
   void dispose() {
     super.dispose();
@@ -37,6 +39,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context);
     var userProvider = Provider.of<UserProvider>(context);
+    void showError(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -93,50 +103,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: SizedBox(
                     width: double.infinity,
                     height: 45,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        UserModel? user = await authProvider.register(
-                          emailController.text,
-                          passwordController.text,
-                          nameController.text,
-                          goalController.text,
-                        );
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            onPressed: () async {
+                              if (emailController.text.isEmpty ||
+                                  passwordController.text.isEmpty ||
+                                  nameController.text.isEmpty ||
+                                  goalController.text.isEmpty) {
+                                showError("Fields Cannot Empty");
+                              } else {
+                                setState(() {
+                                  isLoading = true;
+                                });
 
-                        if (user != null) {
-                          userProvider.user = user;
-                          if (!mounted) return;
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNav(),
+                                UserModel? user = await authProvider.register(
+                                  emailController.text,
+                                  passwordController.text,
+                                  nameController.text,
+                                  goalController.text,
+                                );
+
+                                setState(() {
+                                  isLoading = false;
+                                });
+
+                                if (user != null) {
+                                  userProvider.user = user;
+                                  if (!mounted) return;
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BottomNav(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else {
+                                  showError("Email Sudah Terdaftar!");
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
                             ),
-                            (route) => false,
-                          );
-                        } else {
-                          if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Email Sudah Terdaftar"),
-                              backgroundColor: Colors.red,
+                            child: Text(
+                              "Sign Up",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                color: whiteColor,
+                              ),
                             ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      child: Text(
-                        "Sign Up",
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          color: whiteColor,
-                        ),
-                      ),
-                    ),
+                          ),
                   ),
                 ),
                 const SizedBox(
