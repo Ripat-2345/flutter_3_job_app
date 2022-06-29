@@ -134,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BottomNav(),
+                                      builder: (context) => const BottomNav(),
                                     ),
                                     (route) => false,
                                   );

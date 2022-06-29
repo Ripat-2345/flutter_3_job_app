@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/consts.dart';
 import 'package:flutter_3_job_app/screens/auth/login_screen.dart';
+import 'package:flutter_3_job_app/screens/auth/register_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -47,7 +48,16 @@ class GetStartedScreen extends StatelessWidget {
                       width: 200,
                       height: 45,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const RegisterScreen();
+                              },
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           primary: whiteColor,
                           shape: RoundedRectangleBorder(

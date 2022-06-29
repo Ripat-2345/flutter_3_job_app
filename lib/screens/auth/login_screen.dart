@@ -2,14 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/bottom_nav.dart';
 import 'package:flutter_3_job_app/consts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../consts.dart';
+import '../../models/user_model.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/user_provider.dart';
 import 'register_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var authProvider = Provider.of<AuthProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
+    void showError(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,38 +83,66 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                const FormLogin(),
+                FormLogin(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                ),
                 const SizedBox(height: 40),
                 Center(
                   child: SizedBox(
                     width: double.infinity,
                     height: 45,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const BottomNav();
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            onPressed: () async {
+                              if (emailController.text.isEmpty ||
+                                  passwordController.text.isEmpty) {
+                                showError("Fields Cannot Empty");
+                              } else {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                UserModel? user = await authProvider.login(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
+
+                                setState(() {
+                                  isLoading = false;
+                                });
+
+                                if (user != null) {
+                                  userProvider.user = user;
+                                  if (!mounted) return;
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const BottomNav(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else {
+                                  showError("Email Sudah Terdaftar!");
+                                }
+                              }
                             },
+                            style: ElevatedButton.styleFrom(
+                              primary: primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                            child: Text(
+                              "Log In",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                color: whiteColor,
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      child: Text(
-                        "Get Started",
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          color: whiteColor,
-                        ),
-                      ),
-                    ),
                   ),
                 ),
                 const SizedBox(
@@ -118,9 +179,12 @@ class LoginScreen extends StatelessWidget {
 }
 
 class FormLogin extends StatelessWidget {
-  const FormLogin({
-    Key? key,
-  }) : super(key: key);
+  FormLogin({
+    required this.emailController,
+    required this.passwordController,
+  });
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +209,7 @@ class FormLogin extends StatelessWidget {
             color: const Color(0xffF1F0F5),
           ),
           child: TextField(
+            controller: emailController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,
@@ -184,6 +249,7 @@ class FormLogin extends StatelessWidget {
             color: const Color(0xffF1F0F5),
           ),
           child: TextField(
+            controller: passwordController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,
