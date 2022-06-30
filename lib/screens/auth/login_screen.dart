@@ -250,6 +250,7 @@ class FormLogin extends StatelessWidget {
           ),
           child: TextField(
             controller: passwordController,
+            obscureText: true,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: InputBorder.none,

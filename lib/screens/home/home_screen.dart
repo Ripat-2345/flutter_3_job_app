@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/consts.dart';
+import 'package:flutter_3_job_app/models/category_model.dart';
+import 'package:flutter_3_job_app/providers/category_provider.dart';
 import 'package:flutter_3_job_app/screens/category/category_screen.dart';
 import 'package:flutter_3_job_app/screens/detail_job/detail_job_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../providers/user_provider.dart';
+
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final List<dynamic> categories = [
     [
       "assets/images/bg1.png",
@@ -60,6 +70,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
+    var categoryProvider = Provider.of<CategoryProvider>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -82,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Jason Powell",
+                          userProvider.user.name,
                           style: GoogleFonts.poppins(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
@@ -116,50 +129,60 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: categories.map((data) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CategoryScreen(
-                                  jobs: posteds,
+                FutureBuilder<List<CategoryModel>?>(
+                  future: categoryProvider.getCategories(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: snapshot.data!.map((data) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CategoryScreen(
+                                        jobs: posteds,
+                                      );
+                                    },
+                                  ),
                                 );
                               },
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 16),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 15,
-                          ),
-                          alignment: Alignment.bottomCenter,
-                          width: 150,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            image: DecorationImage(
-                              image: AssetImage(data[0]),
-                            ),
-                          ),
-                          child: Text(
-                            data[1],
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: whiteColor,
-                            ),
-                          ),
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 15,
+                                ),
+                                alignment: Alignment.bottomCenter,
+                                width: 150,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  image: DecorationImage(
+                                    image: NetworkImage(data.imageUrl),
+                                  ),
+                                ),
+                                child: Text(
+                                  data.name,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       );
-                    }).toList(),
-                  ),
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 30,
