@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/models/category_model.dart';
 import 'package:flutter_3_job_app/models/job_model.dart';
+import 'package:flutter_3_job_app/screens/detail_job/detail_job_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -154,7 +155,14 @@ class JobItem extends StatelessWidget {
       width: 312,
       height: 75,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return DetailJobScreen(job);
+            }),
+          );
+        },
         child: Row(
           children: [
             Image.network(

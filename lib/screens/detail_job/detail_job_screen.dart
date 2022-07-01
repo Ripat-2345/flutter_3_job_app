@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/consts.dart';
+import 'package:flutter_3_job_app/models/job_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DetailJobScreen extends StatelessWidget {
-  const DetailJobScreen({Key? key}) : super(key: key);
+class DetailJobScreen extends StatefulWidget {
+  final JobModel job;
+  DetailJobScreen(this.job);
+
+  @override
+  State<DetailJobScreen> createState() => _DetailJobScreenState();
+}
+
+class _DetailJobScreenState extends State<DetailJobScreen> {
+  bool isApply = false;
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +24,33 @@ class DetailJobScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    "assets/icons/google-icon.png",
+                  (isApply == true)
+                      ? Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 9,
+                            horizontal: 25,
+                          ),
+                          width: 312,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: const Color(0xffECEDF1),
+                          ),
+                          child: Flexible(
+                            child: Text(
+                              "You have applied this job and the recruiter will contact you",
+                              style: GoogleFonts.poppins(
+                                color: const Color(0xffA2A6B4),
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Image.network(
+                    widget.job.companyLogo,
                     width: 60,
                     height: 60,
                   ),
@@ -24,7 +58,7 @@ class DetailJobScreen extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    "Front-End Developer",
+                    widget.job.category,
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -32,30 +66,29 @@ class DetailJobScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Google, Inc • Jakarta",
+                    "${widget.job.companyName} • ${widget.job.location}",
                     style: GoogleFonts.poppins(
                       color: const Color(0xffB3B5C4),
                     ),
                   ),
-                  ContentDetail(title: "About the job", content: const [
-                    "Full-Time On Site",
-                    "Start at \$18,000 per month"
-                  ]),
+                  ContentDetail(
+                    title: "About the job",
+                    content: widget.job.about,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  ContentDetail(title: "Qualifications", content: const [
-                    "Candidate must possess at least a Bachelor's Degree.",
-                    "Able to use Microsoft Office and Google based service.",
-                    "Have an excellent time management, good at organized and details",
-                  ]),
+                  ContentDetail(
+                    title: "Qualifications",
+                    content: widget.job.qualifications,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  ContentDetail(title: "Responsibilities", content: const [
-                    "Initiate and promote any programs, events, training, or activities.",
-                    "Assessing and anticipating needs and collaborate with Division.",
-                  ]),
+                  ContentDetail(
+                    title: "Responsibilities",
+                    content: widget.job.responsibilities,
+                  ),
                   const SizedBox(
                     height: 40,
                   ),
@@ -64,9 +97,15 @@ class DetailJobScreen extends StatelessWidget {
                       width: 200,
                       height: 45,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            isApply = true;
+                          });
+                        },
                         style: ElevatedButton.styleFrom(
-                          primary: secondaryColor,
+                          primary: (isApply == true)
+                              ? Colors.redAccent
+                              : secondaryColor,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100),
@@ -113,7 +152,7 @@ class ContentDetail extends StatelessWidget {
     required this.content,
   });
   final String title;
-  final List<String> content;
+  final List content;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +162,7 @@ class ContentDetail extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "About the job",
+            title,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w500,
               color: const Color(0xff272C2F),
