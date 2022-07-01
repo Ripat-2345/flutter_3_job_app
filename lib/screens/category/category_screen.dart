@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_3_job_app/models/category_model.dart';
 import 'package:flutter_3_job_app/models/job_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -7,8 +8,9 @@ import '../../consts.dart';
 import '../../providers/job_provider.dart';
 
 class CategoryScreen extends StatefulWidget {
-  CategoryScreen({required this.categoryJob});
-  final Map<String, dynamic> categoryJob;
+  final CategoryModel category;
+
+  CategoryScreen(this.category);
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -33,7 +35,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               height: 270,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.categoryJob['imageUrl']),
+                  image: NetworkImage(widget.category.imageUrl),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: const BorderRadius.only(
@@ -46,7 +48,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    widget.categoryJob['name'],
+                    widget.category.name,
                     style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
@@ -79,7 +81,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ),
             FutureBuilder<List<JobModel>?>(
-              future: jobProvider.getJobByCategory(widget.categoryJob['name']),
+              future: jobProvider.getJobByCategory(widget.category.name),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Padding(
@@ -88,12 +90,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       right: 24,
                     ),
                     child: Column(
-                      children: snapshot.data!.map((data) {
-                        return JobItem(
-                          icons: data.companyLogo,
-                          title: data.name,
-                          company: data.category,
-                        );
+                      children: snapshot.data!.map((job) {
+                        return JobItem(job);
                       }).toList(),
                     ),
                   );
@@ -128,12 +126,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       right: 24,
                     ),
                     child: Column(
-                      children: snapshot.data!.map((data) {
-                        return JobItem(
-                          icons: data.companyLogo,
-                          title: data.name,
-                          company: data.category,
-                        );
+                      children: snapshot.data!.map((job) {
+                        return JobItem(job);
                       }).toList(),
                     ),
                   );
@@ -151,15 +145,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
 }
 
 class JobItem extends StatelessWidget {
-  JobItem({
-    required this.icons,
-    required this.title,
-    required this.company,
-  });
-
-  final String icons;
-  final String title;
-  final String company;
+  final JobModel job;
+  JobItem(this.job);
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +158,7 @@ class JobItem extends StatelessWidget {
         child: Row(
           children: [
             Image.network(
-              icons,
+              job.companyLogo,
               width: 45,
               height: 45,
             ),
@@ -183,7 +170,7 @@ class JobItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  title,
+                  job.companyName,
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -194,7 +181,7 @@ class JobItem extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  company,
+                  job.category,
                   style: GoogleFonts.poppins(
                     color: const Color(0xffB3B5C4),
                   ),

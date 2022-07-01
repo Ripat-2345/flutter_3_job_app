@@ -19,34 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<dynamic> posteds = [
-    [
-      "assets/icons/google-icon.png",
-      "Front-end Developer",
-      "Google",
-    ],
-    [
-      "assets/icons/instagram.png",
-      "UI Designer",
-      "Instagram",
-    ],
-    [
-      "assets/icons/facebook.png",
-      "Data Scientist",
-      "Facebook",
-    ],
-    [
-      "assets/icons/facebook.png",
-      "React Developer",
-      "Facebook",
-    ],
-    [
-      "assets/icons/facebook.png",
-      "React Native Developer",
-      "Facebook",
-    ],
-  ];
-
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
@@ -123,12 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return CategoryScreen(
-                                        categoryJob: {
-                                          'name': category.name,
-                                          'imageUrl': category.imageUrl
-                                        },
-                                      );
+                                      return CategoryScreen(category);
                                     },
                                   ),
                                 );
