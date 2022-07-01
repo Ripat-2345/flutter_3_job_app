@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/providers/auth_provider.dart';
 import 'package:flutter_3_job_app/providers/category_provider.dart';
+import 'package:flutter_3_job_app/providers/job_provider.dart';
 import 'package:flutter_3_job_app/providers/user_provider.dart';
 import 'package:flutter_3_job_app/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
             create: (context) => UserProvider()),
         ChangeNotifierProvider<CategoryProvider>(
             create: (context) => CategoryProvider()),
+        ChangeNotifierProvider<JobProvider>(
+          create: (context) => JobProvider(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

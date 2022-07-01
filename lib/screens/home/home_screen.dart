@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3_job_app/consts.dart';
 import 'package:flutter_3_job_app/models/category_model.dart';
+import 'package:flutter_3_job_app/models/job_model.dart';
 import 'package:flutter_3_job_app/providers/category_provider.dart';
+import 'package:flutter_3_job_app/providers/job_provider.dart';
 import 'package:flutter_3_job_app/screens/category/category_screen.dart';
 import 'package:flutter_3_job_app/screens/detail_job/detail_job_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,29 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<dynamic> categories = [
-    [
-      "assets/images/bg1.png",
-      "Website Developer",
-    ],
-    [
-      "assets/images/bg2.png",
-      "Mobile Developer",
-    ],
-    [
-      "assets/images/bg3.png",
-      "App Designer",
-    ],
-    [
-      "assets/images/bg4.png",
-      "Content Writer",
-    ],
-    [
-      "assets/images/bg5.png",
-      "Video Grapher",
-    ],
-  ];
-
   final List<dynamic> posteds = [
     [
       "assets/icons/google-icon.png",
@@ -72,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
     var categoryProvider = Provider.of<CategoryProvider>(context);
+    var jobProvider = Provider.of<JobProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -197,60 +177,76 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                for (var i = 0; i < posteds.length; i++)
-                  SizedBox(
-                    width: 312,
-                    height: 75,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const DetailJobScreen();
-                            },
-                          ),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            posteds[i][0],
-                            width: 45,
-                            height: 45,
-                          ),
-                          const SizedBox(
-                            width: 27,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                posteds[i][1],
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xff272C2F),
-                                ),
+                FutureBuilder<List<JobModel>?>(
+                  future: jobProvider.getJobs(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Column(
+                        children: snapshot.data!.map((job) {
+                          return SizedBox(
+                            width: 312,
+                            height: 75,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const DetailJobScreen();
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Image.network(
+                                    job.companyLogo,
+                                    width: 45,
+                                    height: 45,
+                                  ),
+                                  const SizedBox(
+                                    width: 27,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        job.companyName,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xff272C2F),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 2,
+                                      ),
+                                      Text(
+                                        job.name,
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xffB3B5C4),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    color: Color(0xffB3B5C4),
+                                    thickness: 1.0,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                height: 2,
-                              ),
-                              Text(
-                                posteds[i][2],
-                                style: GoogleFonts.poppins(
-                                  color: const Color(0xffB3B5C4),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                              color: Color(0xffB3B5C4), thickness: 1.0),
-                        ],
-                      ),
-                    ),
-                  ),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
               ],
             ),
           ),

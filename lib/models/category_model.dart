@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class CategoryModel {
   late String id;
   late String name;
