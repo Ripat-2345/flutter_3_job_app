@@ -51,50 +51,50 @@ class _LoginScreenState extends State<LoginScreen> {
               horizontal: 24,
               vertical: 30,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Sign In",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: const Color(0xffB3B5C4),
-                  ),
-                ),
-                Text(
-                  "Build Your Career",
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xff272C2F),
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Center(
-                  child: Image.asset(
-                    "assets/images/work_illustration.png",
-                    width: 261,
-                    height: 240,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                FormLogin(
-                  emailController: emailController,
-                  passwordController: passwordController,
-                ),
-                const SizedBox(height: 40),
-                Center(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 45,
-                    child: isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : ElevatedButton(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Sign In",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: const Color(0xffB3B5C4),
+                        ),
+                      ),
+                      Text(
+                        "Build Your Career",
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff272C2F),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Center(
+                        child: Image.asset(
+                          "assets/images/work_illustration.png",
+                          width: 261,
+                          height: 240,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      FormLogin(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                      ),
+                      const SizedBox(height: 40),
+                      Center(
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 45,
+                          child: ElevatedButton(
                             onPressed: () async {
                               if (emailController.text.isEmpty ||
                                   passwordController.text.isEmpty) {
@@ -143,34 +143,34 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const RegisterScreen();
-                          },
                         ),
-                      );
-                    },
-                    child: Text(
-                      "Create New Account",
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w300,
-                        color: const Color(0xffB3B5C4),
                       ),
-                    ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const RegisterScreen();
+                                },
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Create New Account",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w300,
+                              color: const Color(0xffB3B5C4),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

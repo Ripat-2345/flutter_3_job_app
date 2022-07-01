@@ -56,56 +56,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
               horizontal: 24,
               vertical: 30,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Sign Up",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: const Color(0xffB3B5C4),
-                  ),
-                ),
-                Text(
-                  "Begin New Journey",
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xff272C2F),
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Center(
-                  child: Container(
-                    width: 103,
-                    height: 103,
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(color: primaryColor, width: 1.0),
-                    ),
-                    child: Image.asset("assets/images/profilePic.png"),
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                FormRegister(
-                  emailController: emailController,
-                  passwordController: passwordController,
-                  nameController: nameController,
-                  goalController: goalController,
-                ),
-                const SizedBox(height: 40),
-                Center(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 45,
-                    child: isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : ElevatedButton(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Sign Up",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: const Color(0xffB3B5C4),
+                        ),
+                      ),
+                      Text(
+                        "Begin New Journey",
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff272C2F),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Center(
+                        child: Container(
+                          width: 103,
+                          height: 103,
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(color: primaryColor, width: 1.0),
+                          ),
+                          child: Image.asset("assets/images/profilePic.png"),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      FormRegister(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        nameController: nameController,
+                        goalController: goalController,
+                      ),
+                      const SizedBox(height: 40),
+                      Center(
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 45,
+                          child: ElevatedButton(
                             onPressed: () async {
                               if (emailController.text.isEmpty ||
                                   passwordController.text.isEmpty ||
@@ -158,27 +158,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "Back To Sign In",
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w300,
-                        color: const Color(0xffB3B5C4),
+                        ),
                       ),
-                    ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "Back To Sign In",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w300,
+                              color: const Color(0xffB3B5C4),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

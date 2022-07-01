@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_3_job_app/models/job_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../consts.dart';
+import '../../providers/job_provider.dart';
 
-class CategoryScreen extends StatelessWidget {
-  CategoryScreen({required this.jobs});
-  final List<dynamic> jobs;
+class CategoryScreen extends StatefulWidget {
+  CategoryScreen({required this.categoryJob});
+  final Map<String, dynamic> categoryJob;
+
+  @override
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
+    var jobProvider = Provider.of<JobProvider>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -20,12 +31,12 @@ class CategoryScreen extends StatelessWidget {
               ),
               width: double.infinity,
               height: 270,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/category.png"),
+                  image: NetworkImage(widget.categoryJob['imageUrl']),
                   fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
                 ),
@@ -35,7 +46,7 @@ class CategoryScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "Website Developer",
+                    widget.categoryJob['name'],
                     style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
@@ -60,24 +71,37 @@ class CategoryScreen extends StatelessWidget {
                 bottom: 16,
               ),
               child: Text(
-                "Big Companies",
+                "Available Job",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: const Color(0xff272C2F),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 24,
-                right: 24,
-              ),
-              child: Column(
-                children: jobs.map((data) {
-                  return JobItem(
-                      icons: data[0], title: data[1], company: data[2]);
-                }).toList(),
-              ),
+            FutureBuilder<List<JobModel>?>(
+              future: jobProvider.getJobByCategory(widget.categoryJob['name']),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                    ),
+                    child: Column(
+                      children: snapshot.data!.map((data) {
+                        return JobItem(
+                          icons: data.companyLogo,
+                          title: data.name,
+                          company: data.category,
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -87,24 +111,37 @@ class CategoryScreen extends StatelessWidget {
                 bottom: 16,
               ),
               child: Text(
-                "New Startups",
+                "Another Available Job",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: const Color(0xff272C2F),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 24,
-                right: 24,
-              ),
-              child: Column(
-                children: jobs.map((data) {
-                  return JobItem(
-                      icons: data[0], title: data[1], company: data[2]);
-                }).toList(),
-              ),
+            FutureBuilder<List<JobModel>?>(
+              future: jobProvider.getJobs(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                    ),
+                    child: Column(
+                      children: snapshot.data!.map((data) {
+                        return JobItem(
+                          icons: data.companyLogo,
+                          title: data.name,
+                          company: data.category,
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ],
         ),
@@ -133,7 +170,7 @@ class JobItem extends StatelessWidget {
         onTap: () {},
         child: Row(
           children: [
-            Image.asset(
+            Image.network(
               icons,
               width: 45,
               height: 45,

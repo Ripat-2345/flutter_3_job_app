@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: snapshot.data!.map((data) {
+                          children: snapshot.data!.map((category) {
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -124,7 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return CategoryScreen(
-                                        jobs: posteds,
+                                        categoryJob: {
+                                          'name': category.name,
+                                          'imageUrl': category.imageUrl
+                                        },
                                       );
                                     },
                                   ),
@@ -142,11 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   image: DecorationImage(
-                                    image: NetworkImage(data.imageUrl),
+                                    image: NetworkImage(category.imageUrl),
                                   ),
                                 ),
                                 child: Text(
-                                  data.name,
+                                  category.name,
                                   style: GoogleFonts.poppins(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
