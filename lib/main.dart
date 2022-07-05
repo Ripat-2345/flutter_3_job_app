@@ -1,9 +1,11 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_3_job_app/consts.dart';
 import 'package:flutter_3_job_app/providers/auth_provider.dart';
 import 'package:flutter_3_job_app/providers/category_provider.dart';
 import 'package:flutter_3_job_app/providers/job_provider.dart';
 import 'package:flutter_3_job_app/providers/user_provider.dart';
-import 'package:flutter_3_job_app/screens/splash_screen.dart';
+import 'package:flutter_3_job_app/screens/get_started_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,9 +29,14 @@ class MyApp extends StatelessWidget {
           create: (context) => JobProvider(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: AnimatedSplashScreen(
+          backgroundColor: secondaryColor,
+          splash: "assets/icons/logo2.png",
+          splashIconSize: 134.0,
+          nextScreen: const GetStartedScreen(),
+        ),
       ),
     );
   }
