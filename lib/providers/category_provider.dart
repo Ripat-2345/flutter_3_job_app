@@ -10,7 +10,7 @@ class CategoryProvider with ChangeNotifier {
   Future<List<CategoryModel>?> getCategories() async {
     try {
       var response = await http.get(
-        Uri.parse("https://bwa-jobs.herokuapp.com/categories"),
+        Uri.parse("https://future-jobs-api.vercel.app/categories"),
       );
 
       print(response.statusCode);

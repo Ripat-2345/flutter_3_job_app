@@ -22,7 +22,7 @@ class AuthProvider with ChangeNotifier {
       };
 
       var response = await http.post(
-        Uri.parse("https://bwa-jobs.herokuapp.com/register"),
+        Uri.parse("https://future-jobs-api.vercel.app/register"),
         body: body,
       );
 
@@ -51,7 +51,7 @@ class AuthProvider with ChangeNotifier {
       };
 
       var response = await http.post(
-        Uri.parse("https://bwa-jobs.herokuapp.com/login"),
+        Uri.parse("https://future-jobs-api.vercel.app/login"),
         body: body,
       );
 

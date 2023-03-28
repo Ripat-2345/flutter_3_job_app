@@ -10,7 +10,7 @@ class JobProvider with ChangeNotifier {
   Future<List<JobModel>?> getJobs() async {
     try {
       var response = await http.get(
-        Uri.parse("https://bwa-jobs.herokuapp.com/jobs"),
+        Uri.parse("https://future-jobs-api.vercel.app/jobs"),
       );
 
       print(response.statusCode);
@@ -36,7 +36,7 @@ class JobProvider with ChangeNotifier {
   Future<List<JobModel>?> getJobByCategory(String category) async {
     try {
       var response = await http.get(
-        Uri.parse("https://bwa-jobs.herokuapp.com/jobs?category=$category"),
+        Uri.parse("https://future-jobs-api.vercel.app/jobs?category=$category"),
       );
 
       print(response.statusCode);
